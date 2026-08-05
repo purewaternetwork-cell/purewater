@@ -1,0 +1,1 @@
+export default {render(){return '<section>Calculator Module</section>';}}
