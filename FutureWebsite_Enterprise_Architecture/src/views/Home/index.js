@@ -1,0 +1,1 @@
+import Header from '../../components/Layout/Header.js';export default {render(){return Header.render()+'<h1>FutureWebsite</h1>';}}

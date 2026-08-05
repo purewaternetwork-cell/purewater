@@ -1,0 +1,1 @@
+import Home from './views/Home/index.js';document.querySelector('#app').innerHTML=Home.render();
