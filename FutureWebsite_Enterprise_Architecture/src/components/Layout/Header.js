@@ -1,1 +1,0 @@
-export default {render(){return '<header>Header</header>';}}
