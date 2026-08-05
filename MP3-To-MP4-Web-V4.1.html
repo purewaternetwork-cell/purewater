@@ -1,57 +1,364 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MP3 转 MP4 黑屏视频转换器 V5</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MP3 转 MP4 黑屏视频转换器</title>
+
 <style>
-body{background:#111;color:#fff;font-family:Arial;margin:0}
-.box{max-width:900px;margin:40px auto;padding:30px;background:#222;border-radius:16px}
-button{padding:12px 20px;margin:8px}
-#log{background:#000;padding:15px;min-height:120px;white-space:pre-wrap}
+body{
+    margin:0;
+    background:#111;
+    color:#fff;
+    font-family:
+    Arial,
+    "Microsoft YaHei",
+    sans-serif;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:30px;
+    background:#1c1c1c;
+    border-radius:18px;
+}
+
+h1{
+    text-align:center;
+}
+
+button{
+    padding:12px 24px;
+    margin:10px 5px;
+    border:0;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#log{
+    margin-top:20px;
+    background:#000;
+    padding:15px;
+    min-height:150px;
+    white-space:pre-wrap;
+}
+
+.download{
+    display:block;
+    color:#5da9ff;
+    margin-top:10px;
+}
 </style>
+
 </head>
+
+
 <body>
-<div class="box">
-<h1>MP3 → MP4 黑屏视频转换器 V5</h1>
-<input id="files" type="file" accept=".mp3" multiple>
-<button id="load">加载引擎</button>
-<button id="start" disabled>开始转换</button>
-<pre id="log">等待...</pre>
-<div id="downloads"></div>
+
+
+<div class="container">
+
+<h1>
+MP3 → MP4 黑屏视频转换器
+</h1>
+
+
+<input 
+id="fileInput"
+type="file"
+accept=".mp3"
+multiple
+>
+
+
+<br>
+
+
+<button id="loadBtn">
+加载 FFmpeg
+</button>
+
+
+<button id="convertBtn" disabled>
+开始转换
+</button>
+
+
+<div id="log">
+等待加载...
 </div>
 
-<script src="./ffmpeg/ffmpeg.min.js"></script>
-<script>
-let ffmpeg;
-const log=document.getElementById("log");
-const start=document.getElementById("start");
 
-load.onclick=async()=>{
- try{
-  log.textContent="加载本地 FFmpeg...";
-  ffmpeg=FFmpeg.createFFmpeg({log:true,corePath:"./ffmpeg/ffmpeg-core.js"});
-  await ffmpeg.load();
-  start.disabled=false;
-  log.textContent+="
-加载成功";
- }catch(e){log.textContent="失败:
-"+e;}
+<div id="downloads"></div>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+import { FFmpeg } 
+from "./ffmpeg/index.js";
+
+
+import { fetchFile } 
+from "./ffmpeg/utils.js";
+
+
+
+const ffmpeg = new FFmpeg();
+
+
+
+const log =
+document.getElementById("log");
+
+
+const loadBtn =
+document.getElementById("loadBtn");
+
+
+const convertBtn =
+document.getElementById("convertBtn");
+
+
+const fileInput =
+document.getElementById("fileInput");
+
+
+const downloads =
+document.getElementById("downloads");
+
+
+
+
+
+ffmpeg.on(
+"log",
+({message})=>{
+    log.textContent +=
+    "\n" + message;
+});
+
+
+
+
+
+loadBtn.onclick = async()=>{
+
+try{
+
+
+log.textContent =
+"正在加载 FFmpeg 0.12.10...";
+
+
+
+await ffmpeg.load({
+
+    coreURL:
+    "./ffmpeg/ffmpeg-core.js",
+
+    wasmURL:
+    "./ffmpeg/ffmpeg-core.wasm"
+
+});
+
+
+
+log.textContent +=
+"\nFFmpeg 加载成功";
+
+
+convertBtn.disabled=false;
+
+
+
+}
+catch(error){
+
+console.error(error);
+
+log.textContent =
+"加载失败:\n"
++
+error;
+
+}
+
+
 };
 
-start.onclick=async()=>{
- for(const file of files.files){
-  const name=file.name.replace(/\.mp3$/i,"");
-  ffmpeg.FS("writeFile",file.name,new Uint8Array(await file.arrayBuffer()));
-  await ffmpeg.run("-f","lavfi","-i","color=c=black:s=1920x1080:r=30","-i",file.name,"-c:v","libx264","-c:a","aac","-shortest",name+".mp4");
-  const data=ffmpeg.FS("readFile",name+".mp4");
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([data.buffer],{type:"video/mp4"}));
-  a.download=name+".mp4";
-  a.textContent="下载 "+name+".mp4";
-  downloads.appendChild(a);
- }
+
+
+
+
+
+
+convertBtn.onclick = async()=>{
+
+
+const files =
+Array.from(
+fileInput.files
+);
+
+
+
+if(files.length===0){
+
+alert("请选择 MP3 文件");
+
+return;
+
+}
+
+
+
+for(const file of files){
+
+
+
+const filename =
+file.name.replace(
+/\.mp3$/i,
+""
+);
+
+
+
+log.textContent +=
+"\n开始转换: "
++
+file.name;
+
+
+
+await ffmpeg.writeFile(
+
+file.name,
+
+await fetchFile(file)
+
+);
+
+
+
+
+
+await ffmpeg.exec([
+
+
+"-f",
+"lavfi",
+
+
+"-i",
+"color=c=black:s=1920x1080:r=30",
+
+
+"-i",
+file.name,
+
+
+"-c:v",
+"libx264",
+
+
+"-pix_fmt",
+"yuv420p",
+
+
+"-c:a",
+"aac",
+
+
+"-b:a",
+"320k",
+
+
+"-shortest",
+
+
+filename+".mp4"
+
+
+]);
+
+
+
+
+
+const data =
+await ffmpeg.readFile(
+filename+".mp4"
+);
+
+
+
+
+
+const blob =
+new Blob(
+[data.buffer],
+{
+type:"video/mp4"
+}
+);
+
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+
+const link =
+document.createElement("a");
+
+
+link.className =
+"download";
+
+
+link.href=url;
+
+
+link.download =
+filename+".mp4";
+
+
+link.textContent =
+"下载 "
++
+filename+".mp4";
+
+
+
+downloads.appendChild(link);
+
+
+
+log.textContent +=
+"\n完成: "
++
+filename+".mp4";
+
+
+
+}
+
+
 };
+
+
+
 </script>
+
+
 </body>
 </html>
