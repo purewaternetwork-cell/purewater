@@ -1,0 +1,1 @@
+# Enterprise Luxury Static Website\nDeploy directly to GitHub and Vercel.
