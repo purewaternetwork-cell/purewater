@@ -1,19 +1,12 @@
-V4.1 本地同源版
+V5 静态部署版
 
-部署结构:
-
+根目录:
 index.html
 ffmpeg/
-  index.js
-  classes.js
-  const.js
-  errors.js
-  types.js
-  utils.js
-  worker.js
-  ffmpeg-core.js
-  ffmpeg-core.wasm
 
-本版本不调用 CDN Worker，避免跨域 SecurityError。
+ffmpeg目录需要:
+ffmpeg.min.js
+ffmpeg-core.js
+ffmpeg-core.wasm
 
-需要将 @ffmpeg/ffmpeg 0.12.x 的 esm 文件放入 ffmpeg 目录。
+上传 GitHub/Vercel 即可。
