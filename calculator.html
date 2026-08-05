@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>中考标准科学计算器</title>
+<style>
+*{
+    box-sizing:border-box;
+    user-select:none;
+}
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    radial-gradient(circle at top,#eaf3ff,#b7c8df);
+    font-family:"Microsoft YaHei",Arial,sans-serif;
+}
+.calculator{
+    width:920px;
+    padding:28px;
+    border-radius:35px;
+    background:rgba(255,255,255,.25);
+    backdrop-filter:blur(18px);
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.25),
+    inset 0 0 30px rgba(255,255,255,.5);
+}
+.title{
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+    color:#18324d;
+    margin-bottom:15px;
+}
+.display{
+    height:150px;
+    background:#101820;
+    border-radius:20px;
+    padding:18px 25px;
+    color:#9eff9e;
+    box-shadow:
+    inset 0 0 20px #000,
+    0 8px 15px rgba(0,0,0,.3);
+    overflow:hidden;
+}
+.history{
+    height:45px;
+    font-size:24px;
+    white-space:nowrap;
+    overflow-x:auto;
+    color:#a7c7a7;
+}
+.result{
+    height:75px;
+    font-size:55px;
+    text-align:right;
+    white-space:nowrap;
+    overflow-x:auto;
+}
+.section{
+    margin-top:18px;
+    padding:15px;
+    background:rgba(255,255,255,.35);
+    border-radius:22px;
+    box-shadow:inset 0 0 15px rgba(255,255,255,.5);
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    gap:10px;
+}
+button{
+    height:55px;
+    border:none;
+    border-radius:15px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(#ffffff,#dce6f2);
+    color:#233;
+    box-shadow:
+    0 5px 10px rgba(0,0,0,.18),
+    inset 0 -3px 5px rgba(0,0,0,.12);
+    transition:.12s;
+}
+button:hover{
+    background:#d5e8ff;
+}
+button:active{
+    transform:translateY(4px) scale(.96);
+    box-shadow:0 2px 5px #555;
+}
+.blue{
+    background:linear-gradient(#5ea8ff,#2671d8);
+    color:white;
+}
+.red{
+    background:linear-gradient(#ff7777,#d93333);
+    color:white;
+}
+.green{
+    background:linear-gradient(#7ce39a,#25a954);
+    color:white;
+}
+.orange{
+    background:linear-gradient(#ffc66b,#e88b00);
+    color:white;
+}
+.small{
+    font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+
+<div class="title">中考标准科学计算器</div>
+
+<div class="display">
+    <div id="history" class="history"></div>
+    <div id="result" class="result">0</div>
+</div>
+
+
+<div class="section">
+<div class="grid">
+
+<button class="red" onclick="clearAll()">AC</button>
+<button onclick="back()">⌫</button>
+<button onclick="insert('(')">(</button>
+<button onclick="insert(')')">)</button>
+<button onclick="insert('%')">%</button>
+<button onclick="memory('MC')">MC</button>
+<button onclick="memory('MR')">MR</button>
+<button onclick="memory('M+')">M+</button>
+
+<button onclick="insert('7')">7</button>
+<button onclick="insert('8')">8</button>
+<button onclick="insert('9')">9</button>
+<button onclick="insert('/')">÷</button>
+<button onclick="insert('sin(')">sin</button>
+<button onclick="insert('cos(')">cos</button>
+<button onclick="insert('tan(')">tan</button>
+<button onclick="insert('M-')">M-</button>
+
+<button onclick="insert('4')">4</button>
+<button onclick="insert('5')">5</button>
+<button onclick="insert('6')">6</button>
+<button onclick="insert('*')">×</button>
+<button onclick="insert('log(')">log</button>
+<button onclick="insert('ln(')">ln</button>
+<button onclick="insert('π')">π</button>
+<button onclick="insert('e')">e</button>
+
+<button onclick="insert('1')">1</button>
+<button onclick="insert('2')">2</button>
+<button onclick="insert('3')">3</button>
+<button onclick="insert('-')">−</button>
+<button onclick="insert('sqrt(')">√</button>
+<button onclick="insert('^2')">x²</button>
+<button onclick="insert('^3')">x³</button>
+<button onclick="insert('^')">xⁿ</button>
+
+<button onclick="insert('0')">0</button>
+<button onclick="insert('.')">.</button>
+<button onclick="insert('-')">±</button>
+<button onclick="insert('+')">+</button>
+<button onclick="insert('1/')">1/x</button>
+<button onclick="insert('abs(')">abs</button>
+<button onclick="insert('fact(')">n!</button>
+<button class="green" onclick="calculate()">=</button>
+
+</div>
+</div>
+
+
+<div class="section">
+<div class="grid">
+
+<button class="blue small" onclick="fraction()">小数⇄分数</button>
+<button class="blue small" onclick="baseConvert(2)">BIN</button>
+<button class="blue small" onclick="baseConvert(8)">OCT</button>
+<button class="blue small" onclick="baseConvert(10)">DEC</button>
+<button class="blue small" onclick="baseConvert(16)">HEX</button>
+
+</div>
+</div>
+
+
+</div>
+
+
+<script>
+
+let expression="";
+let memoryValue=0;
+let lastResult=0;
+
+
+/* 显示更新 */
+function update(){
+    document.getElementById("history").innerText=expression;
+    document.getElementById("result").innerText=
+    expression||"0";
+}
+
+
+/* 输入 */
+function insert(v){
+    expression+=v;
+    update();
+}
+
+
+/* 清除 */
+function clearAll(){
+    expression="";
+    update();
+}
+
+
+/* 删除 */
+function back(){
+    expression=expression.slice(0,-1);
+    update();
+}
+
+
+/* 数学环境 */
+function fact(n){
+    n=Math.floor(n);
+    if(n<0||n>170) throw Error();
+    let r=1;
+    for(let i=2;i<=n;i++)r*=i;
+    return r;
+}
+
+
+function safeEval(str){
+
+    str=str
+    .replace(/π/g,"Math.PI")
+    .replace(/\be\b/g,"Math.E")
+    .replace(/sqrt\(/g,"Math.sqrt(")
+    .replace(/sin\(/g,"Math.sin(Math.PI/180*")
+    .replace(/cos\(/g,"Math.cos(Math.PI/180*")
+    .replace(/tan\(/g,"Math.tan(Math.PI/180*")
+    .replace(/log\(/g,"Math.log10(")
+    .replace(/ln\(/g,"Math.log(")
+    .replace(/abs\(/g,"Math.abs(")
+    .replace(/fact\(/g,"fact(")
+    .replace(/(\d+(\.\d+)?)%/g,"($1/100)")
+    .replace(/\^/g,"**");
+
+    if(str.length>500)
+        throw Error("公式过长");
+
+    if(!/^[0-9+\-*/().,%A-Za-z_π\s*]+$/.test(str))
+        throw Error();
+
+    let value=Function(
+    "Math",
+    "fact",
+    "return "+str
+    )(Math,fact);
+
+
+    if(!isFinite(value))
+        throw Error();
+
+    return value;
+}
+
+
+/* 计算 */
+function calculate(){
+
+try{
+
+let fixed=expression;
+
+/* 自动修正连续符号 */
+fixed=fixed.replace(/[+\-*/]{2,}/g,
+m=>m[m.length-1]);
+
+
+let value=safeEval(fixed);
+
+lastResult=value;
+
+document.getElementById("history").innerText=
+expression+"=";
+
+expression=
+Number(value.toFixed(12)).toString();
+
+update();
+
+}catch(e){
+
+document.getElementById("history").innerText=
+expression;
+
+document.getElementById("result").innerText=
+"错误";
+
+expression="";
+
+}
+
+}
+
+
+
+/* 记忆 */
+function memory(type){
+
+let val=parseFloat(document.getElementById("result").innerText);
+
+if(isNaN(val)) val=0;
+
+if(type==="MC")
+memoryValue=0;
+
+if(type==="MR")
+insert(memoryValue.toString());
+
+if(type==="M+")
+memoryValue+=val;
+
+if(type==="M-")
+memoryValue-=val;
+
+}
+
+
+
+/* 分数转换 */
+function fraction(){
+
+try{
+
+let num=parseFloat(
+safeEval(expression)
+);
+
+let a=num;
+let b=1;
+
+while(Math.abs(a-Math.round(a))>1e-10 && b<10000){
+a*=10;
+b*=10;
+}
+
+let n=Math.round(a);
+
+function gcd(x,y){
+while(y){let t=x%y;x=y;y=t;}
+return x;
+}
+
+let g=gcd(Math.abs(n),b);
+
+n/=g;
+b/=g;
+
+if(b===1)
+expression=n.toString();
+else
+expression=n+"/"+b;
+
+update();
+
+}catch(e){
+
+document.getElementById("result").innerText="错误";
+
+}
+
+}
+
+
+/* 进制 */
+function baseConvert(base){
+
+try{
+
+let num=parseInt(
+safeEval(expression)
+);
+
+let result;
+
+if(base===2)
+result=num.toString(2);
+
+if(base===8)
+result=num.toString(8);
+
+if(base===10)
+result=num.toString(10);
+
+if(base===16)
+result=num.toString(16).toUpperCase();
+
+
+expression=result;
+
+update();
+
+}catch(e){
+
+document.getElementById("result").innerText="错误";
+
+}
+
+}
+
+
+/* 键盘支持 */
+
+document.addEventListener(
+"keydown",
+function(e){
+
+let k=e.key;
+
+if(
+(k>="0"&&k<="9")||
+["+","-","*","/","(",")","."].includes(k)
+){
+insert(k);
+}
+
+else if(k==="Enter")
+calculate();
+
+else if(k==="Backspace")
+back();
+
+else if(k==="Escape")
+clearAll();
+
+});
+
+update();
+
+</script>
+
+</body>
+</html>
