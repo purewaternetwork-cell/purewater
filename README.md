@@ -1,31 +1,11 @@
 # FutureWebsite Enterprise Architecture
 
-A GitHub-ready frontend architecture starter project.
+Vercel-ready Vite project.
 
-## Project Structure
-
-```
-src/
-├── api/                 # API communication layer
-├── components/          # Shared UI components
-├── modules/             # Feature modules
-│   └── Calculator/
-├── store/               # Application state
-└── views/               # Page-level views
-
-public/
-└── robots.txt
-```
-
-## Installation
+## Local development
 
 ```bash
 npm install
-```
-
-## Development
-
-```bash
 npm run dev
 ```
 
@@ -35,8 +15,4 @@ npm run dev
 npm run build
 ```
 
-## Design Principles
-
-- Modular architecture
-- Separation of UI, business logic, API and state
-- Easy expansion for enterprise-level features
+The production output is generated in `dist/`.
