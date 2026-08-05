@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS REALITY ENGINE</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html,body{margin:0;background:#020617;color:white;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
+body{background:
+radial-gradient(circle at 50% 20%,rgba(34,211,238,.25),transparent 35%),
+radial-gradient(circle at 80% 50%,rgba(168,85,247,.2),transparent 30%),
+#020617}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.15)}
+.hero-device{
+width:320px;height:220px;border-radius:45%;
+background:linear-gradient(135deg,#020617,#334155,#020617);
+box-shadow:0 0 80px #22d3ee,0 0 160px #8b5cf6;
+animation:float 5s infinite ease-in-out;
+}
+@keyframes float{50%{transform:translateY(-30px)}}
+.orbit{animation:spin 20s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<nav class="fixed top-0 w-full z-50 glass p-6 flex justify-between">
+<div class="font-bold tracking-widest text-cyan-300">NEXUS REALITY ENGINE</div>
+<div class="space-x-6 hidden md:block">
+<a>Technology</a><a>Virtual World</a><a>Devices</a><a>Launch</a>
+</div>
+</nav>
+
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+<div class="absolute w-96 h-96 rounded-full border border-cyan-400 orbit"></div>
+<div class="hero-device flex items-center justify-center relative z-10">
+<span class="text-6xl">◈</span>
+</div>
+
+<h1 class="mt-16 text-5xl md:text-8xl font-black">
+THE FUTURE IS NOT VIRTUAL.<br>
+<span class="text-cyan-300">IT IS ALIVE.</span>
+</h1>
+
+<p class="max-w-3xl mt-8 text-xl text-slate-300">
+A next generation neural virtual reality civilization platform from the year 2099.
+</p>
+
+<button class="mt-10 px-10 py-5 rounded-full bg-cyan-400 text-black font-bold">
+ENTER THE NEXT REALITY
+</button>
+</section>
+
+<section class="p-10 md:p-24 grid md:grid-cols-3 gap-8">
+<div class="glass p-8 rounded-3xl">
+<h2 class="text-3xl text-cyan-300">Neural Interface</h2>
+<p class="mt-4">Quantum brain connection, AI reality engine and zero latency immersion technology.</p>
+</div>
+<div class="glass p-8 rounded-3xl">
+<h2 class="text-3xl text-purple-300">Virtual World</h2>
+<p class="mt-4">Floating cities, digital civilizations and unlimited artificial worlds.</p>
+</div>
+<div class="glass p-8 rounded-3xl">
+<h2 class="text-3xl text-blue-300">Quantum Core</h2>
+<p class="mt-4">Next generation computing architecture powering infinite realities.</p>
+</div>
+</section>
+
+<section class="p-10 md:p-24">
+<h2 class="text-5xl font-bold text-center mb-12">DEVICE EXPERIENCE</h2>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="glass p-8 rounded-3xl">Founder Edition</div>
+<div class="glass p-8 rounded-3xl">Quantum Edition</div>
+<div class="glass p-8 rounded-3xl">Ultimate Immersion Edition</div>
+</div>
+</section>
+
+<section class="min-h-screen flex items-center justify-center text-center">
+<div>
+<h2 class="text-6xl md:text-8xl font-black text-purple-300">
+ENTER THE NEXT REALITY
+</h2>
+<p class="mt-6 text-2xl">NEXUS SYSTEM ONLINE · YEAR 2099</p>
+</div>
+</section>
+
+<script>
+const stars=document.createElement("canvas");
+stars.style.position="fixed";
+stars.style.inset="0";
+stars.style.zIndex="-1";
+document.body.appendChild(stars);
+const c=stars.getContext("2d");
+stars.width=innerWidth;stars.height=innerHeight;
+let pts=[...Array(180)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2}));
+function draw(){
+c.clearRect(0,0,stars.width,stars.height);
+c.fillStyle="white";
+pts.forEach(p=>{c.beginPath();c.arc(p.x,p.y,p.s,0,Math.PI*2);c.fill();});
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
