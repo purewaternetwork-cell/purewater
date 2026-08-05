@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS REALITY ENGINE - 次元梦境</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+color:white;
+font-family:"Microsoft YaHei","Noto Sans SC",sans-serif;
+background:
+radial-gradient(circle at 50% 10%,rgba(255,255,255,.25),transparent 20%),
+linear-gradient(135deg,#020617,#120026,#020617);
+overflow-x:hidden;
+}
+.stars{position:fixed;inset:0;z-index:-1}
+.glass{
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.2);
+backdrop-filter:blur(25px);
+box-shadow:0 0 50px rgba(124,58,237,.25);
+}
+.title{
+background:linear-gradient(90deg,#fff,#67e8f9,#c084fc);
+-webkit-background-clip:text;
+color:transparent;
+}
+.device{
+width:360px;height:230px;
+border-radius:45%;
+background:
+linear-gradient(145deg,#020617,#64748b,#020617);
+box-shadow:
+0 0 60px #22d3ee,
+0 0 120px #a855f7,
+inset 0 0 50px white;
+animation:floating 6s infinite ease-in-out;
+}
+@keyframes floating{
+50%{transform:translateY(-35px) rotateY(10deg)}
+}
+.ring{
+position:absolute;
+border:1px solid rgba(103,232,249,.5);
+border-radius:50%;
+animation:rotate 20s linear infinite;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.card:hover{
+transform:translateY(-15px);
+box-shadow:0 0 50px #a855f7;
+}
+.card{transition:.5s}
+</style>
+</head>
+
+<body>
+
+<canvas class="stars"></canvas>
+
+<nav class="fixed top-0 w-full z-50 glass p-5 flex justify-between">
+<div class="font-bold tracking-widest text-cyan-300">
+NEXUS REALITY ENGINE
+</div>
+<div class="hidden md:flex gap-8 text-sm">
+首页　神经科技　虚拟世界　设备　未来入口
+</div>
+</nav>
+
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
+
+<div class="ring w-[500px] h-[500px]"></div>
+<div class="ring w-[700px] h-[700px]"></div>
+
+<div class="device flex items-center justify-center z-10">
+<div class="text-7xl text-cyan-300">◈</div>
+</div>
+
+<h1 class="title text-5xl md:text-8xl font-black mt-16">
+未来并非虚拟<br>
+它是真实的延伸
+</h1>
+
+<p class="max-w-4xl mt-8 text-xl text-gray-300">
+欢迎进入 2099 年的神经虚拟现实文明。
+一台连接意识、梦想与无限世界的终极 VR 神经设备。
+</p>
+
+<button class="mt-10 px-12 py-5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-bold text-xl">
+进入次元梦境
+</button>
+
+</section>
+
+
+<section class="p-10 md:p-24">
+<h2 class="text-5xl text-center title mb-12">量子神经科技</h2>
+
+<div class="grid md:grid-cols-3 gap-10">
+
+<div class="glass rounded-3xl p-8">
+<h3 class="text-3xl text-cyan-300">意识连接系统</h3>
+<p class="mt-5">
+通过量子神经接口，让思维直接进入无限虚拟空间。
+</p>
+</div>
+
+<div class="glass rounded-3xl p-8">
+<h3 class="text-3xl text-purple-300">AI 梦境核心</h3>
+<p class="mt-5">
+人工智能创造永恒世界，每一次进入都是独一无二的体验。
+</p>
+</div>
+
+<div class="glass rounded-3xl p-8">
+<h3 class="text-3xl text-pink-300">零延迟沉浸</h3>
+<p class="mt-5">
+突破现实边界，实现感官完全同步。
+</p>
+</div>
+
+</div>
+</section>
+
+
+<section class="p-10 md:p-24">
+
+<h2 class="text-5xl text-center title mb-12">
+虚拟世界展示
+</h2>
+
+<div class="glass rounded-3xl p-12 text-center">
+
+<h3 class="text-4xl">
+星辰之城 · 永恒大陆
+</h3>
+
+<p class="mt-6 text-xl text-gray-300">
+漂浮城堡、未来都市、银河网络，
+数十亿用户共同生活的新文明。
+</p>
+
+</div>
+
+</section>
+
+
+<section class="p-10 md:p-24">
+
+<h2 class="text-5xl text-center title mb-12">
+尊贵设备系列
+</h2>
+
+<div class="grid md:grid-cols-3 gap-8">
+
+<div class="glass card rounded-3xl p-10 text-center">
+<h3 class="text-3xl">创世版</h3>
+<p>Founder Edition</p>
+</div>
+
+<div class="glass card rounded-3xl p-10 text-center">
+<h3 class="text-3xl">量子版</h3>
+<p>Quantum Edition</p>
+</div>
+
+<div class="glass card rounded-3xl p-10 text-center">
+<h3 class="text-3xl">无限沉浸版</h3>
+<p>Ultimate Immersion</p>
+</div>
+
+</div>
+</section>
+
+
+<section class="min-h-screen flex items-center justify-center text-center">
+<div>
+<h2 class="title text-6xl md:text-9xl font-black">
+进入下一现实
+</h2>
+<p class="mt-8 text-2xl">
+NEXUS SYSTEM ONLINE · YEAR 2099
+</p>
+</div>
+</section>
+
+
+<script>
+const c=document.querySelector("canvas");
+const ctx=c.getContext("2d");
+function resize(){
+c.width=innerWidth;c.height=innerHeight;
+}
+resize();window.onresize=resize;
+
+let stars=[];
+for(let i=0;i<250;i++){
+stars.push({
+x:Math.random()*innerWidth,
+y:Math.random()*innerHeight,
+s:Math.random()*2
+});
+}
+function animate(){
+ctx.clearRect(0,0,c.width,c.height);
+ctx.fillStyle="white";
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.s,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
